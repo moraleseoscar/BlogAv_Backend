@@ -1,0 +1,11 @@
+{
+  "name": "lab6",
+  "version": "1.0.0",
+  "description": "A blog to talk about different Avatars",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Oscar Estrada",
+  "license": "ISC"
+}
