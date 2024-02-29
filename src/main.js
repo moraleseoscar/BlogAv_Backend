@@ -1,8 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import * as db from './db.js';
 
 const app = express();
 const port = 3000;
+
+app.use(cors({
+    origin: 'http://127.0.0.1:3000',
+  }));
 
 app.use(express.json());
 
@@ -36,6 +41,10 @@ app.get('/posts/:postId', async (req, res) => {
 // Ruta para crear un nuevo post
 app.post('/posts', async (req, res) => {
     const { title, content, image_avatar, element_avatar } = req.body;
+    if (!title || !content) {
+        res.status(400).json({ error: 'Bad Request: Missing required fields' });
+        return;
+    }
     try {
         const result = await db.createPost(title, content, image_avatar, element_avatar);
         res.status(200).json(result);
@@ -49,6 +58,10 @@ app.post('/posts', async (req, res) => {
 app.put('/posts/:postId', async (req, res) => {
     const postId = req.params.postId;
     const { title, content } = req.body;
+    if (!title || !content) {
+        res.status(400).json({ error: 'Bad Request: Missing required fields' });
+        return;
+    }
     try {
         const result = await db.updatePost(postId, title, content);
         res.status(200).json(result);
@@ -67,6 +80,20 @@ app.delete('/posts/:postId', async (req, res) => {
     } catch (error) {
         console.error(`Error deleting post with ID ${postId}:`, error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Middleware para manejar rutas no encontradas
+app.use((req, res, next) => {
+    res.status(404).json({ error: 'Not Found: Endpoint not found' });
+});
+
+// Middleware para manejar errores de formato de solicitud
+app.use((err, req, res, next) => {
+    if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+        res.status(400).json({ error: 'Bad Request: Invalid JSON' });
+    } else {
+        next();
     }
 });
 
