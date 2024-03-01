@@ -6,12 +6,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json' assert { type: 'json' };
 
 const app = express();
-const port = 3030;
+const port = 3000;
 
-// Implementación de Cors.
-app.use(cors({
-    origin: 'http://localhost:3030',
-}));
 
 // Ruta para servir la documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
