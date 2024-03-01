@@ -6,11 +6,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json' assert { type: 'json' };
 
 const app = express();
-const port = 3000;
+const port = 20565;
 
 // Implementación de Cors.
 app.use(cors({
-    origin: 'http://127.0.0.1:3000',
+    origin: 'http://20565.arpanetos.lol:20565',
 }));
 
 // Ruta para servir la documentación Swagger
@@ -119,5 +119,5 @@ app.use((req, res, next) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server listening at http://127.0.0.1:${port}`);
+    console.log(`Server listening at http://20565.arpanetos.lol:${port}`);
 });
