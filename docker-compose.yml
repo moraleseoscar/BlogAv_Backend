@@ -15,12 +15,12 @@ services:
     volumes:
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
-  # app:
-  #   build: .
-  #   depends_on:
-  #     - mysqldb
-  #   links:
-  #     - mysqldb
-  #   ports:
-  #     - 3000:3000
+  app:
+    build: .
+    depends_on:
+      - mysqldb
+    links:
+      - mysqldb
+    ports:
+      - 3000:3000
 
