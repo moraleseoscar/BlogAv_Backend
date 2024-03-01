@@ -8,6 +8,10 @@ import swaggerDocument from '../swagger.json' assert { type: 'json' };
 const app = express();
 const port = 3000;
 
+// Implementación de Cors.
+app.use(cors({
+    origin: 'http://20565.arpanetos.lol',
+}));
 
 // Ruta para servir la documentación Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
