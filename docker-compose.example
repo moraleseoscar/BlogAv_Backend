@@ -22,5 +22,5 @@ services:
     links:
       - mysqldb
     ports:
-      - 20565:3000
+      - 3030:3000
 
