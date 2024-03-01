@@ -10,7 +10,7 @@ const port = 20565;
 
 // Implementación de Cors.
 app.use(cors({
-    origin: 'http://20565.arpanetos.lol:20565',
+    origin: 'http://20565.arpanetos.lol',
 }));
 
 // Ruta para servir la documentación Swagger
