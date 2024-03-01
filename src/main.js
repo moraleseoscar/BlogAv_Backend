@@ -1,16 +1,24 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
 import * as db from './db.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger.json' assert { type: 'json' };
 
 const app = express();
 const port = 3000;
 
+// Implementación de Cors.
 app.use(cors({
     origin: 'http://127.0.0.1:3000',
-  }));
+}));
+
+// Ruta para servir la documentación Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(express.json());
 
+// Inicio
 app.get('/', (req, res) => {
     res.send('Home');
 });
@@ -40,13 +48,17 @@ app.get('/posts/:postId', async (req, res) => {
 
 // Ruta para crear un nuevo post
 app.post('/posts', async (req, res) => {
-    const { title, content, image_avatar, element_avatar } = req.body;
-    if (!title || !content) {
+    const { title, content, image, element_avatar } = req.body;
+    if (!title || !content || !image || !element_avatar) {
         res.status(400).json({ error: 'Bad Request: Missing required fields' });
         return;
     }
     try {
-        const result = await db.createPost(title, content, image_avatar, element_avatar);
+        // Leer la imagen desde la ruta especificada
+        const imageBuffer = fs.readFileSync(image);
+        // Convertir la imagen a formato base64
+        const imageBase64 = imageBuffer.toString('base64');
+        const result = await db.createPost(title, content, imageBase64, element_avatar);
         res.status(200).json(result);
     } catch (error) {
         console.error('Error creating post:', error);
@@ -57,13 +69,17 @@ app.post('/posts', async (req, res) => {
 // Ruta para actualizar un post existente
 app.put('/posts/:postId', async (req, res) => {
     const postId = req.params.postId;
-    const { title, content } = req.body;
-    if (!title || !content) {
+    const { title, content, image, element_avatar } = req.body;
+    if (!title || !content || !image || !element_avatar) {
         res.status(400).json({ error: 'Bad Request: Missing required fields' });
         return;
     }
     try {
-        const result = await db.updatePost(postId, title, content);
+        // Leer la imagen desde la ruta especificada
+        const imageBuffer = fs.readFileSync(image);
+        // Convertir la imagen a formato base64
+        const imageBase64 = imageBuffer.toString('base64');
+        const result = await db.updatePost(postId, title, content, imageBase64, element_avatar);
         res.status(200).json(result);
     } catch (error) {
         console.error(`Error updating post with ID ${postId}:`, error);
@@ -95,6 +111,11 @@ app.use((err, req, res, next) => {
     } else {
         next();
     }
+});
+
+// Middleware para manejar métodos HTTP no implementados
+app.use((req, res, next) => {
+    res.status(501).send('Not Implemented');
 });
 
 app.listen(port, () => {

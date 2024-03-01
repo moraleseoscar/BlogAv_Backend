@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "Blog API",
+      "description": "API para gestionar publicaciones de un blog",
+      "version": "1.0.0"
+    },
+    "paths": {
+      "/posts": {
+        "get": {
+          "summary": "Obtener todos los posts",
+          "responses": {
+            "200": {
+              "description": "Lista de todos los posts"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        },
+        "post": {
+          "summary": "Crear un nuevo post",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "element_avatar": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "content", "image", "element_avatar"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Post creado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Campos requeridos faltantes"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        }
+      },
+      "/posts/{postId}": {
+        "get": {
+          "summary": "Obtener un post por su ID",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Detalles del post"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        },
+        "put": {
+          "summary": "Actualizar un post existente",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary"
+                    },
+                    "element_avatar": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["title", "content", "image", "element_avatar"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Post actualizado exitosamente"
+            },
+            "400": {
+              "description": "Bad Request: Campos requeridos faltantes"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        },
+        "delete": {
+          "summary": "Eliminar un post existente",
+          "parameters": [
+            {
+              "name": "postId",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer"
+              }
+            }
+          ],
+          "responses": {
+            "204": {
+              "description": "Post eliminado exitosamente"
+            },
+            "500": {
+              "description": "Error interno del servidor"
+            }
+          }
+        }
+      }
+    }
+  }
+  

@@ -19,8 +19,8 @@ export async function createPost(title, content, image_avatar, element) {
 }
 
 // Función para actualizar un post existente
-export async function updatePost(postId, title, content) {
-    const [result] = await conn.query('UPDATE blog_posts SET title = ?, content = ? WHERE id = ?', [title, content, postId]);
+export async function updatePost(postId, title, content, image, element) {
+    const [result] = await conn.query('UPDATE blog_posts SET title = ?, content = ?, image = ?, element = ? WHERE id = ?', [title, content, image, element, postId]);
     return result;
 }
 
